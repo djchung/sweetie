@@ -1,0 +1,73 @@
+package com.codepath.apps.sweetie;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import android.app.Activity;
+import android.content.Context;
+import android.text.Html;
+import android.text.format.DateUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.codepath.apps.sweetie.models.Tweet;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+public class TweetsAdapter extends ArrayAdapter<Tweet> {
+	public TweetsAdapter(Context context, List<Tweet> tweets) {
+		super(context, 0, tweets);
+	}
+	
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		View view = convertView;
+		if (view == null) {
+			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			view = inflater.inflate(R.layout.tweet_item, null);
+		}
+		
+		Tweet tweet = getItem(position);
+		
+		ImageView imageView = (ImageView) view.findViewById(R.id.ivProfile);
+		ImageLoader.getInstance().displayImage(tweet.getUser().getProfileImage(), imageView);
+		
+		TextView nameView = (TextView) view.findViewById(R.id.tvName);
+		String formattedName = "<b>" + tweet.getUser().getName() + "</b>" + " <small><font color='#777777'>@" +
+						tweet.getUser().getScreenName() + "</font></small>";
+		nameView.setText(Html.fromHtml(formattedName));
+		
+		TextView bodyView = (TextView) view.findViewById(R.id.tvBody);
+		bodyView.setText(Html.fromHtml(tweet.getBody()));
+		
+		TextView createdAtView = (TextView) view.findViewById(R.id.tvCreatedAt);
+		String dateFormat = "EEE MMM dd HH:mm:ss ZZZZ yyyy";
+		SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.ENGLISH);
+		sdf.setLenient(true);
+		Date createdDate = null;
+		try {
+			createdDate = sdf.parse(tweet.getCreatedAt());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String dateString = (String) DateUtils.getRelativeDateTimeString(view.getContext(), createdDate.getTime(), 
+				DateUtils.MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0);
+		
+//		String formattedTS = " <small><font color='#777777'>" +
+//				tweet.getCreatedAt() + "</font></small>";
+		String formattedTS = " <small><font color='#777777'>" +
+				dateString + "</font></small>";
+
+		createdAtView.setText(Html.fromHtml(formattedTS));
+	
+		return view;
+	}
+}
