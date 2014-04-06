@@ -1,47 +1,40 @@
 package com.codepath.apps.sweetie;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-
-import android.app.Activity;
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
+import android.app.ActionBar.TabListener;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import com.codepath.apps.sweetie.models.Tweet;
-import com.loopj.android.http.JsonHttpResponseHandler;
+import com.codepath.apps.sweetie.fragments.HomeTimeLineFragment;
+import com.codepath.apps.sweetie.fragments.MentionsFragment;
 
-public class TimeLineActivity extends Activity {
-
-	private int count;
-	private String idString;
-	private TweetsAdapter adapter;
-	private ArrayList<Tweet> tweets = new ArrayList<Tweet>();
-	private ListView lvTimeline;
+public class TimeLineActivity extends FragmentActivity implements TabListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_time_line);
-		
-		adapter = new TweetsAdapter(getBaseContext(), tweets);
-		
-		lvTimeline = (ListView) findViewById(R.id.lvTweets);
-		lvTimeline.setAdapter(adapter);
-		lvTimeline.setOnScrollListener(new EndlessScrollListener() {
+		setupNavigationTabs();
+	}
 
-			@Override
-			public void onLoadMore(int page, int totalItemsCount) {				
-					refreshTweets(25, idString);
-			}
-		});
-		count = 25;
-		refreshTweets(count, null);
-
+	private void setupNavigationTabs() {
+		ActionBar actionBar = getActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		actionBar.setDisplayShowTitleEnabled(true);
+		
+		Tab tabHome = actionBar.newTab().setText("Home").setTag("HomeTimelineFragment")
+				.setTabListener(this);
+		Tab tabMentions = actionBar.newTab().setText("Mentions").setTag("MentionsFragment")
+				.setTabListener(this);
+		
+		actionBar.addTab(tabHome);
+		actionBar.addTab(tabMentions);
+		actionBar.selectTab(tabHome);		
 	}
 
 	@Override
@@ -57,29 +50,26 @@ public class TimeLineActivity extends Activity {
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-		adapter.clear();
-		refreshTweets(25, null);
+	public void onTabReselected(Tab tab, FragmentTransaction ft) {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void refreshTweets(int count, String max_id) {
-		//TODO: after refreshing, user is taken to the top - fix this
-		TwitterApp.getRestClient().getHomeTimeline(count, max_id, new JsonHttpResponseHandler() {
-			@Override
-			public void onSuccess(JSONArray jsonTweets) {
-				tweets = Tweet.fromJson(jsonTweets);
-				Tweet lastTweet = tweets.get(tweets.size() - 1);
-				idString = lastTweet.getIdString();
-				adapter.addAll(tweets);				
-			}
+	@Override
+	public void onTabSelected(Tab tab, FragmentTransaction ft) {
+		android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+		android.support.v4.app.FragmentTransaction fts = manager.beginTransaction();
+		if (tab.getTag() == "HomeTimelineFragment") {
+			fts.replace(R.id.frameContainer, new HomeTimeLineFragment());
+		} else {
+			fts.replace(R.id.frameContainer, new MentionsFragment());
+		}
+		fts.commit();		
+	}
 
-			@Override
-			public void onFailure(Throwable arg0, JSONArray arg1) {
-				// TODO Auto-generated method stub
-
-				Toast.makeText(getBaseContext(), "Failed to load", Toast.LENGTH_SHORT).show();
-			}
-		});
+	@Override
+	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+		// TODO Auto-generated method stub
+		
 	}
 }

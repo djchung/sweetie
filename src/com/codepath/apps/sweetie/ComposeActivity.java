@@ -2,14 +2,13 @@ package com.codepath.apps.sweetie;
 
 import org.json.JSONObject;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class ComposeActivity extends Activity {
 

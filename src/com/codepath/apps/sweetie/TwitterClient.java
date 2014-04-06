@@ -42,12 +42,14 @@ public class TwitterClient extends OAuthBaseClient {
     	getClient().get(url, params, handler);
     }
     
-    public void getMoreTimeline(int count, long max_id, AsyncHttpResponseHandler handler) {
-    	String url = getApiUrl("statuses/home_timeline.json");
+    public void getMentions(int count, String max_id, AsyncHttpResponseHandler handler) {
+    	String url = getApiUrl("statuses/mentions_timeline.json");
     	RequestParams params = new RequestParams();
     	params.put("count", String.valueOf(count));
-    	params.put("max_id", String.valueOf(max_id));
-    	getClient().get(url, params, handler);
+    	if (max_id != null ) {
+    		params.put("max_id", max_id);
+    	}
+    	getClient().get(url, null, handler);
     }
     
     public void postTweet(String body, AsyncHttpResponseHandler handler) {
@@ -56,15 +58,6 @@ public class TwitterClient extends OAuthBaseClient {
     	params.put("status", body);
     	getClient().post(url, params, handler);
     	
-    }
-    // CHANGE THIS
-    // DEFINE METHODS for different API endpoints here
-    public void getInterestingnessList(AsyncHttpResponseHandler handler) {
-        String apiUrl = getApiUrl("?nojsoncallback=1&method=flickr.interestingness.getList");
-        // Can specify query string params directly or through RequestParams.
-        RequestParams params = new RequestParams();
-        params.put("format", "json");
-        client.get(apiUrl, params, handler);
     }
     
     /* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
