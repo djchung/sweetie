@@ -48,6 +48,11 @@ public class TimeLineActivity extends FragmentActivity implements TabListener {
 		Intent i = new Intent(this, ComposeActivity.class);
 		startActivity(i);
 	}
+	
+	public void onProfileView(MenuItem menuItem) {
+		Intent i = new Intent(this, ProfileActivity.class);
+		startActivity(i);
+	}
 
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {

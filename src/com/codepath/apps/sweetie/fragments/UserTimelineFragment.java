@@ -5,37 +5,36 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.codepath.apps.sweetie.TwitterApp;
 import com.codepath.apps.sweetie.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-public class HomeTimeLineFragment extends TweetsListFragment {
+public class UserTimelineFragment extends TweetsListFragment {
 	private ArrayList<Tweet> tweets = new ArrayList<Tweet>();
 	private String idString;
 	private static final int COUNT = 25;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);				
-		refreshTweets(COUNT, null);
+		refreshMentions(COUNT, null);
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
 		getAdapter().clear();
-		refreshTweets(COUNT, null);
+		refreshMentions(COUNT, null);
 	}
 	
-	public void refreshTweets(int count, String max_id) {
-		TwitterApp.getRestClient().getHomeTimeline(count, max_id, new JsonHttpResponseHandler() {
+	public void refreshMentions(int count, String max_id) {
+		TwitterApp.getRestClient().getUserTimeline(count, max_id, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONArray jsonTweets) {			
 				tweets = Tweet.fromJson(jsonTweets);
 				Tweet lastTweet = tweets.get(tweets.size() - 1);
- 				idString = lastTweet.getIdString();
+				idString = lastTweet.getIdString();
 				getAdapter().addAll(tweets);
 			}
 
@@ -47,7 +46,7 @@ public class HomeTimeLineFragment extends TweetsListFragment {
 	
 	@Override
 	public void loadMoreItems() {		
-		refreshTweets(COUNT, idString);
+		refreshMentions(COUNT, idString);
 	}
 
 }
