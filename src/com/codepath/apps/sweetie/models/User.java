@@ -3,7 +3,10 @@ package com.codepath.apps.sweetie.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class User {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class User implements Parcelable {
 	private String name;
 	private long uid;
 	private String screenName;
@@ -66,4 +69,56 @@ public class User {
         }
         return u;
     }
+    
+    public User() {
+    	
+    }
+    
+    public User(Parcel in) {
+    	name = in.readString();
+    	uid = in.readLong();
+    	screenName = in.readString();
+    	profileBgImageUrl = in.readString();
+    	profileImage = in.readString();
+    	numTweets = in.readInt();
+    	followersCount = in.readInt();
+    	friendsCount = in.readInt();
+    	tagline = in.readString();
+    }
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		// TODO Auto-generated method stub
+		dest.writeString(name);
+		dest.writeLong(uid);
+		dest.writeString(screenName);
+		dest.writeString(profileBgImageUrl);
+		dest.writeString(profileImage);
+		dest.writeInt(numTweets);
+		dest.writeInt(followersCount);
+		dest.writeInt(friendsCount);
+		dest.writeString(tagline);
+		
+	}
+	
+	public static final Parcelable.Creator<User> CREATOR
+     	= new Parcelable.Creator<User>() {
+		 	public User createFromParcel(Parcel in) {
+		 		return new User(in);
+		 	}
+
+		 	public User[] newArray(int size) {
+		 		return new User[size];
+		 	}
+	 };
+	
+	
+	
+	
 }

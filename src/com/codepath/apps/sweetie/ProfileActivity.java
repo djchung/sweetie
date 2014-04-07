@@ -4,33 +4,49 @@ import org.json.JSONObject;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.codepath.apps.sweetie.fragments.MentionsFragment;
+import com.codepath.apps.sweetie.fragments.UserTimelineFragment;
 import com.codepath.apps.sweetie.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class ProfileActivity extends FragmentActivity {
+	
+	User twitterUser;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
+		twitterUser = getIntent().getParcelableExtra("twitterUser");		
 		loadProfileInfo();
-
 	}
 
 	private void loadProfileInfo() {
-		TwitterApp.getRestClient().getMyInfo(new JsonHttpResponseHandler() {
-			@Override
-			public void onSuccess(JSONObject json) {
-				User u = User.fromJson(json);
-				getActionBar().setTitle("@" + u.getScreenName());
-				populateProfileHeader(u);
-			}
-		});
+		
+		if (twitterUser != null) {
+			populateProfileHeader(twitterUser);
+			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+			UserTimelineFragment fragment = UserTimelineFragment.newInstance(twitterUser.getScreenName());
+			ft.replace(R.id.fragment_user_timeline, fragment);
+			ft.commit();
+			
+		} else {
+			TwitterApp.getRestClient().getMyInfo(new JsonHttpResponseHandler() {
+				@Override
+				public void onSuccess(JSONObject json) {
+					User u = User.fromJson(json);
+					getActionBar().setTitle("@" + u.getScreenName());
+					populateProfileHeader(u);
+				}
+			});
+		}
+		
 	}
 
 	protected void populateProfileHeader(User u) {
