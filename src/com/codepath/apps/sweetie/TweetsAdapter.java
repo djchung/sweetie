@@ -89,8 +89,6 @@ public class TweetsAdapter extends ArrayAdapter<Tweet> {
 	
 	public void showUser(User user) {
 		Intent i = new Intent(getContext(), ProfileActivity.class);
-		//set extra
-//		i.putext serialize?	
 		i.putExtra("twitterUser", user);
 		getContext().startActivity(i);
 	}

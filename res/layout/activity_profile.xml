@@ -64,8 +64,16 @@
             android:text="10 following" />
         
      </LinearLayout>
+     
+    <FrameLayout
+        android:id="@+id/tweets_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/llCounts" >
 
-    <fragment
+    </FrameLayout>
+
+    <!-- <fragment
         android:id="@+id/fragment_user_timeline"
         android:name="com.codepath.apps.sweetie.fragments.UserTimelineFragment"
         android:layout_width="wrap_content"
@@ -73,6 +81,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/llCounts"
-        tools:layout="@layout/fragments_tweets_list" />
+        tools:layout="@layout/fragments_tweets_list" /> -->
+        
+     
 
 </RelativeLayout>

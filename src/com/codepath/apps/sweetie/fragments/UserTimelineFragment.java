@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.activeandroid.util.Log;
 import com.codepath.apps.sweetie.TwitterApp;
 import com.codepath.apps.sweetie.models.Tweet;
 import com.codepath.apps.sweetie.models.User;
@@ -23,7 +24,6 @@ public class UserTimelineFragment extends TweetsListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//nullpointerhere...
 		twitterUsername = getArguments().getString("username", "");
 		refreshTweets(COUNT, null, twitterUsername);
 	}

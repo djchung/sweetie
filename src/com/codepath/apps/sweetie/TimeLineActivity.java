@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import com.codepath.apps.sweetie.fragments.HomeTimeLineFragment;
 import com.codepath.apps.sweetie.fragments.MentionsFragment;
+import com.codepath.apps.sweetie.models.User;
 
 public class TimeLineActivity extends FragmentActivity implements TabListener {
 
@@ -51,7 +52,7 @@ public class TimeLineActivity extends FragmentActivity implements TabListener {
 	
 	public void onProfileView(MenuItem menuItem) {
 		Intent i = new Intent(this, ProfileActivity.class);
-		startActivity(i);
+		startActivity(i);		
 	}
 
 	@Override

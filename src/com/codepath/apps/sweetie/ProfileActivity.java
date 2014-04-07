@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codepath.apps.sweetie.fragments.MentionsFragment;
 import com.codepath.apps.sweetie.fragments.UserTimelineFragment;
@@ -33,16 +34,21 @@ public class ProfileActivity extends FragmentActivity {
 			populateProfileHeader(twitterUser);
 			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 			UserTimelineFragment fragment = UserTimelineFragment.newInstance(twitterUser.getScreenName());
-			ft.replace(R.id.fragment_user_timeline, fragment);
+			ft.replace(R.id.tweets_placeholder, fragment);
 			ft.commit();
 			
 		} else {
 			TwitterApp.getRestClient().getMyInfo(new JsonHttpResponseHandler() {
 				@Override
 				public void onSuccess(JSONObject json) {
-					User u = User.fromJson(json);
-					getActionBar().setTitle("@" + u.getScreenName());
-					populateProfileHeader(u);
+					twitterUser = User.fromJson(json);
+					getActionBar().setTitle("@" + twitterUser.getScreenName());
+					populateProfileHeader(twitterUser);
+					
+					FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+					UserTimelineFragment fragment = UserTimelineFragment.newInstance(twitterUser.getScreenName());
+					ft.replace(R.id.tweets_placeholder, fragment);
+					ft.commit();
 				}
 			});
 		}

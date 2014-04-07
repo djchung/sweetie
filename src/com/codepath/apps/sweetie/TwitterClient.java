@@ -75,7 +75,7 @@ public class TwitterClient extends OAuthBaseClient {
     	if (!username.isEmpty()) {
     		params.put("screen_name", username);
     	}
-    	getClient().get(url, null, handler);
+    	getClient().get(url, params, handler);
     }
     
     /* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
