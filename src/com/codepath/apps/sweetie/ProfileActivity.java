@@ -69,11 +69,4 @@ public class ProfileActivity extends FragmentActivity {
 		  ImageLoader.getInstance().displayImage(u.getProfileImage(), ivProfileImage);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.profile, menu);
-		return true;
-	}
-
 }
