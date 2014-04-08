@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:hint="What's happening?"
         android:ems="10"
         android:background="#00000000"
         android:inputType="textMultiLine" >
