@@ -1,6 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/charLimit"
+        android:showAsAction="always"
+        android:title="140"/>
+    <item
         android:id="@+id/action_settings"
         android:showAsAction="always"
         android:icon="@drawable/ic_save"
