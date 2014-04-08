@@ -3,9 +3,12 @@ package com.codepath.apps.sweetie;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -16,6 +19,15 @@ public class ComposeActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_compose);
+		EditText tweetCompose = (EditText) findViewById(R.id.etStatus);
+		if (tweetCompose.requestFocus()) {
+			showKeyboardForView(tweetCompose);
+		}
+	}
+	
+	private void showKeyboardForView(View v) {
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
 	}
 
 	@Override
